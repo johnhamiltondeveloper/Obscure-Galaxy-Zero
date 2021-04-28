@@ -1,0 +1,157 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Level/Level_Elements/EndScreen/UI/endscreenUI.gd" type="Script" id=1]
+
+[sub_resource type="Animation" id=1]
+resource_name = "end"
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("bottom/Panel2:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1e-05 ), Vector2( 1, 0.1 ), Vector2( 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("top/Panel:rect_scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.05, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1e-05 ), Vector2( 1, 0.1 ), Vector2( 1, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("menu:rect_position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.25, 0.35 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( -429.69, 481 ), Vector2( 44.0677, 481 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("next:rect_position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0.25, 0.35 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1156.29, 481 ), Vector2( 573.344, 481 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("score_text:rect_position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0.3, 0.45, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 388, -144.81 ), Vector2( 388, 300 ), Vector2( 388, 257.828 ) ]
+}
+
+[node name="endscreenUI" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/end = SubResource( 1 )
+
+[node name="top" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 0.5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="top"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_scale = Vector2( 1, 1e-05 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="bottom" type="Control" parent="."]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel2" type="Panel" parent="bottom"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 1024.0
+margin_top = 300.0
+margin_right = 1024.0
+margin_bottom = 300.0
+rect_rotation = 180.0
+rect_scale = Vector2( 1, 1e-05 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="next" type="Button" parent="."]
+anchor_left = 0.559907
+anchor_top = 0.801667
+anchor_right = 0.956391
+anchor_bottom = 0.965
+margin_left = 541.708
+margin_right = 541.708
+text = "next"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="menu" type="Button" parent="."]
+anchor_left = 0.0430349
+anchor_top = 0.801667
+anchor_right = 0.439519
+anchor_bottom = 0.965
+margin_left = -440.245
+margin_right = -440.245
+text = "menu"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="score_text" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -124.0
+margin_top = -423.833
+margin_right = 124.0
+margin_bottom = -336.833
+rect_scale = Vector2( 2, 2 )
+rect_pivot_offset = Vector2( 123, 45 )
+text = "1020"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="menu" to="." method="_on_menu_pressed"]

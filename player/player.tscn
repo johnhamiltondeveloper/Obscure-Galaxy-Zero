@@ -1,0 +1,116 @@
+[gd_scene load_steps=19 format=2]
+
+[ext_resource path="res://player/Mouse.gd" type="Script" id=1]
+[ext_resource path="res://player/PlayerCollisionDetection.gd" type="Script" id=2]
+[ext_resource path="res://player/player.gd" type="Script" id=3]
+[ext_resource path="res://player/input.gd" type="Script" id=4]
+[ext_resource path="res://player/PlayerModel/HoverCraft.obj" type="ArrayMesh" id=5]
+[ext_resource path="res://player/PlayerModel/HoverCraft_low_Material_AlbedoTransparency.png" type="Texture" id=6]
+[ext_resource path="res://player/PlayerModel/HoverCraft_low_Material_Normal.png" type="Texture" id=7]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 0.724631, 0.735126, 0.973224 )
+
+[sub_resource type="Gradient" id=2]
+offsets = PoolRealArray( 0, 0.612676, 0.978873, 1 )
+colors = PoolColorArray( 0.980469, 0.428566, 0.386826, 1, 0.898438, 0.651126, 0.178986, 1, 0.980469, 0.980469, 0.980469, 1, 0, 0, 0, 1 )
+
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 2 )
+
+[sub_resource type="Curve" id=4]
+_data = [ Vector2( 0, 1 ), 0.0, 1.09865, 0, 0, Vector2( 0.14948, 1 ), 0.658525, 0.658525, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=5]
+curve = SubResource( 4 )
+
+[sub_resource type="ParticlesMaterial" id=6]
+spread = 100.0
+gravity = Vector3( 0, 0, 10 )
+initial_velocity = 1.0
+angular_velocity = 9.85113e-43
+scale = 0.6
+scale_curve = SubResource( 5 )
+color_ramp = SubResource( 3 )
+hue_variation_random = 1.0
+
+[sub_resource type="SpatialMaterial" id=7]
+flags_unshaded = true
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+
+[sub_resource type="PlaneMesh" id=8]
+material = SubResource( 7 )
+
+[sub_resource type="BoxShape" id=9]
+extents = Vector3( 0.944086, 2.46273, 1.2048 )
+
+[sub_resource type="SpatialMaterial" id=10]
+albedo_color = Color( 0.992157, 0.992157, 0.992157, 1 )
+albedo_texture = ExtResource( 6 )
+normal_enabled = true
+normal_scale = 1.0
+normal_texture = ExtResource( 7 )
+
+[sub_resource type="SphereShape" id=11]
+radius = 6.06042
+
+[node name="Player" type="KinematicBody" groups=[
+"bounce",
+"player",
+]]
+script = ExtResource( 3 )
+
+[node name="input" type="Node" parent="."]
+script = ExtResource( 4 )
+
+[node name="Tagget" type="Node2D" parent="input"]
+self_modulate = Color( 1, 1, 1, 0.392157 )
+script = ExtResource( 1 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 1 )
+
+[node name="Particles" type="Particles" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.169808, 0.930441 )
+amount = 50
+lifetime = 0.2
+visibility_aabb = AABB( -5.42446, -1.49808, -6.16858, 10.888, 2.99616, 12.3596 )
+local_coords = false
+process_material = SubResource( 6 )
+draw_pass_1 = SubResource( 8 )
+
+[node name="NoMove" type="Node" parent="."]
+
+[node name="RayCast" type="RayCast" parent="NoMove"]
+enabled = true
+cast_to = Vector3( 0, -40, 0 )
+collision_mask = 2
+collide_with_areas = true
+collide_with_bodies = false
+
+[node name="HitCoolDown" type="Timer" parent="."]
+one_shot = true
+
+[node name="CollisionDetection" type="Area" parent="."]
+script = ExtResource( 2 )
+
+[node name="CollisionShape" type="CollisionShape" parent="CollisionDetection"]
+shape = SubResource( 9 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( -0.432395, 0, -3.78012e-08, 0, 0.432395, 0, 3.78012e-08, 0, -0.432395, 0, 0.502868, 0.319028 )
+mesh = ExtResource( 5 )
+material/0 = null
+material/1 = SubResource( 10 )
+
+[node name="bubble" type="Area" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="bubble"]
+shape = SubResource( 11 )
+
+[node name="OmniLight" type="OmniLight" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.45723, 2.31753 )
+omni_range = 9.32351
+[connection signal="Death" from="CollisionDetection" to="." method="_on_CollisionDetection_Death"]
+[connection signal="body_entered" from="CollisionDetection" to="CollisionDetection" method="_on_CollisionDetection_body_entered"]

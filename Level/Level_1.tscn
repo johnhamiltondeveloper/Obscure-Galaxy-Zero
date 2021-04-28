@@ -1,0 +1,173 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://game.gd" type="Script" id=1]
+[ext_resource path="res://Level/Level_Manager.gd" type="Script" id=2]
+[ext_resource path="res://Level/LevelData.gd" type="Script" id=3]
+[ext_resource path="res://Level/WaypointManager.gd" type="Script" id=4]
+[ext_resource path="res://Level/Objects.gd" type="Script" id=5]
+[ext_resource path="res://Level/file_decoder.gd" type="Script" id=6]
+[ext_resource path="res://Level/PlayerManager.gd" type="Script" id=7]
+[ext_resource path="res://Level/states.gd" type="Script" id=8]
+[ext_resource path="res://Level/complete.gd" type="Script" id=9]
+[ext_resource path="res://Level/game.gd" type="Script" id=10]
+[ext_resource path="res://Level/Level_Complete.gd" type="Script" id=11]
+[ext_resource path="res://Level/Main.gd" type="Script" id=12]
+[ext_resource path="res://Level/Level_failed.gd" type="Script" id=13]
+
+[sub_resource type="PlaneShape" id=1]
+
+[node name="Game" type="Node"]
+script = ExtResource( 1 )
+
+[node name="Level_Manager" type="Node" parent="."]
+script = ExtResource( 2 )
+
+[node name="Level_Data" type="Node" parent="Level_Manager"]
+script = ExtResource( 3 )
+
+[node name="Waypoints" type="Node" parent="Level_Manager/Level_Data"]
+script = ExtResource( 4 )
+
+[node name="Objects" type="Node" parent="Level_Manager/Level_Data"]
+script = ExtResource( 5 )
+
+[node name="file_decoder" type="Node" parent="Level_Manager/Level_Data"]
+script = ExtResource( 6 )
+
+[node name="player" type="Node" parent="Level_Manager/Level_Data"]
+script = ExtResource( 7 )
+
+[node name="states" type="Node" parent="Level_Manager"]
+script = ExtResource( 8 )
+
+[node name="complete" type="Node" parent="Level_Manager/states"]
+script = ExtResource( 9 )
+
+[node name="game" type="Node" parent="Level_Manager/states"]
+script = ExtResource( 10 )
+
+[node name="UI" type="Node" parent="Level_Manager"]
+
+[node name="Level_Complete" type="Node2D" parent="Level_Manager/UI"]
+visible = false
+script = ExtResource( 11 )
+
+[node name="Panel" type="Panel" parent="Level_Manager/UI/Level_Complete"]
+margin_right = 1028.0
+margin_bottom = 601.0
+
+[node name="Next" type="Button" parent="Level_Manager/UI/Level_Complete"]
+margin_left = 388.0
+margin_top = 461.0
+margin_right = 996.0
+margin_bottom = 576.0
+text = "Next Level"
+
+[node name="main" type="Button" parent="Level_Manager/UI/Level_Complete"]
+margin_left = 23.0
+margin_top = 462.0
+margin_right = 366.0
+margin_bottom = 576.0
+text = "main Menu"
+
+[node name="Main" type="Node2D" parent="Level_Manager/UI"]
+visible = false
+script = ExtResource( 12 )
+
+[node name="Panel" type="Panel" parent="Level_Manager/UI/Main"]
+margin_right = 1028.0
+margin_bottom = 596.0
+
+[node name="Button" type="Button" parent="Level_Manager/UI/Main"]
+margin_left = 708.0
+margin_top = 500.0
+margin_right = 1010.0
+margin_bottom = 585.0
+text = "Play"
+
+[node name="ItemList" type="ItemList" parent="Level_Manager/UI/Main"]
+margin_left = 30.5285
+margin_top = 57.7854
+margin_right = 151.528
+margin_bottom = 402.785
+
+[node name="ItemList2" type="ItemList" parent="Level_Manager/UI/Main"]
+margin_left = 172.695
+margin_top = 61.9518
+margin_right = 408.695
+margin_bottom = 403.952
+
+[node name="Label" type="Label" parent="Level_Manager/UI/Main"]
+margin_left = 33.1939
+margin_top = 28.466
+margin_right = 107.194
+margin_bottom = 59.466
+text = "Missions
+"
+
+[node name="Label2" type="Label" parent="Level_Manager/UI/Main"]
+margin_left = 183.0
+margin_top = 27.8639
+margin_right = 228.0
+margin_bottom = 58.8639
+text = "Levels
+"
+
+[node name="Level_failed" type="Node2D" parent="Level_Manager/UI"]
+visible = false
+script = ExtResource( 13 )
+
+[node name="Panel" type="Panel" parent="Level_Manager/UI/Level_failed"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 1027.0
+margin_bottom = 603.0
+
+[node name="Retry" type="Button" parent="Level_Manager/UI/Level_failed"]
+margin_left = 322.194
+margin_top = 219.092
+margin_right = 675.194
+margin_bottom = 385.092
+text = "Retry"
+
+[node name="Home" type="Button" parent="Level_Manager/UI/Level_failed"]
+margin_left = 14.0
+margin_top = 14.0
+margin_right = 212.0
+margin_bottom = 86.0
+text = "Home"
+
+[node name="3D" type="Node" parent="."]
+
+[node name="FloorPlan" type="Area" parent="3D"]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape" type="CollisionShape" parent="3D/FloorPlan"]
+shape = SubResource( 1 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="3D"]
+transform = Transform( 1, 0, 0, 0, 0.802266, 0.596967, 0, -0.596967, 0.802266, 0, 10.6862, 21.6821 )
+
+[node name="Camera" type="Camera" parent="3D"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 161.878, 0 )
+current = true
+fov = 20.0
+far = 200.0
+
+[node name="Camera2D" type="Camera2D" parent="."]
+anchor_mode = 0
+current = true
+[connection signal="complete" from="Level_Manager/Level_Data/Waypoints" to="Level_Manager" method="_on_Waypoints_complete"]
+[connection signal="update" from="Level_Manager/states/complete" to="Level_Manager/states" method="update"]
+[connection signal="update" from="Level_Manager/states/game" to="Level_Manager/states" method="update"]
+[connection signal="main_menu" from="Level_Manager/UI/Level_Complete" to="." method="_on_Level_Complete_main_menu"]
+[connection signal="next_level" from="Level_Manager/UI/Level_Complete" to="." method="_on_Level_Complete_next_level"]
+[connection signal="pressed" from="Level_Manager/UI/Level_Complete/Next" to="Level_Manager/UI/Level_Complete" method="_on_Next_pressed"]
+[connection signal="pressed" from="Level_Manager/UI/Level_Complete/main" to="Level_Manager/UI/Level_Complete" method="_on_main_pressed"]
+[connection signal="startGame" from="Level_Manager/UI/Main" to="Level_Manager" method="_on_Main_startGame"]
+[connection signal="pressed" from="Level_Manager/UI/Main/Button" to="Level_Manager/UI/Main" method="_on_Button_pressed"]
+[connection signal="main_menu" from="Level_Manager/UI/Level_failed" to="Level_Manager" method="_on_Level_failed_main_menu"]
+[connection signal="restart_level" from="Level_Manager/UI/Level_failed" to="Level_Manager" method="_on_Level_failed_restart_level"]
+[connection signal="pressed" from="Level_Manager/UI/Level_failed/Retry" to="Level_Manager/UI/Level_failed" method="_on_Retry_pressed"]
+[connection signal="pressed" from="Level_Manager/UI/Level_failed/Home" to="Level_Manager/UI/Level_failed" method="_on_Home_pressed"]

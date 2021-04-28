@@ -1,0 +1,148 @@
+[gd_resource type="ShaderMaterial" load_steps=14 format=2]
+
+[sub_resource type="VisualShaderNodeScalarOp" id=1]
+default_input_values = [ 0, 0.0, 1, 3.0 ]
+
+[sub_resource type="VisualShaderNodeScalarOp" id=2]
+default_input_values = [ 0, 0.0, 1, 5.0 ]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarOp" id=3]
+default_input_values = [ 0, 0.0, 1, 10.0 ]
+operator = 3
+
+[sub_resource type="VisualShaderNodeScalarFunc" id=4]
+
+[sub_resource type="VisualShaderNodeInput" id=5]
+input_name = "normal"
+
+[sub_resource type="VisualShaderNodeVectorDecompose" id=6]
+
+[sub_resource type="VisualShaderNodeScalarOp" id=7]
+default_input_values = [ 0, 0.0, 1, 1.8 ]
+operator = 5
+
+[sub_resource type="VisualShaderNodeScalarFunc" id=8]
+function = 15
+
+[sub_resource type="VisualShaderNodeScalarFunc" id=9]
+function = 1
+
+[sub_resource type="VisualShaderNodeColorConstant" id=10]
+constant = Color( 1, 0.902344, 0, 1 )
+
+[sub_resource type="VisualShaderNodeInput" id=11]
+input_name = "time"
+
+[sub_resource type="VisualShaderNodeScalarFunc" id=12]
+function = 0
+
+[sub_resource type="VisualShader" id=13]
+code = "shader_type spatial;
+render_mode cull_disabled;
+
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Color:7
+	vec3 n_out7p0;
+	float n_out7p1;
+	n_out7p0 = vec3(1.000000,0.902344,0.000000);
+	n_out7p1 = 1.000000;
+
+// Input:2
+	vec3 n_out2p0;
+	n_out2p0 = NORMAL;
+
+// VectorDecompose:3
+	float n_out3p0;
+	float n_out3p1;
+	float n_out3p2;
+	n_out3p0 = n_out2p0.x;
+	n_out3p1 = n_out2p0.y;
+	n_out3p2 = n_out2p0.z;
+
+// ScalarFunc:6
+	float n_out6p0;
+	n_out6p0 = cos(n_out3p2);
+
+// Input:8
+	float n_out8p0;
+	n_out8p0 = TIME;
+
+// ScalarOp:11
+	float n_in11p1 = 5.00000;
+	float n_out11p0;
+	n_out11p0 = n_out8p0 * n_in11p1;
+
+// ScalarFunc:9
+	float n_out9p0;
+	n_out9p0 = sin(n_out11p0);
+
+// ScalarOp:10
+	float n_in10p1 = 3.00000;
+	float n_out10p0;
+	n_out10p0 = n_out9p0 + n_in10p1;
+
+// ScalarOp:4
+	float n_out4p0;
+	n_out4p0 = pow( n_out6p0 , n_out10p0 );
+
+// ScalarFunc:5
+	float n_out5p0;
+	n_out5p0 = round(n_out4p0);
+
+// ScalarOp:12
+	float n_in12p1 = 10.00000;
+	float n_out12p0;
+	n_out12p0 = n_out5p0 / n_in12p1;
+
+// Output:0
+	ALBEDO = n_out7p0;
+	ALPHA = n_out12p0;
+	EMISSION = n_out7p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( 916, -76 )
+modes/cull = 2
+nodes/fragment/0/position = Vector2( 1880, 40 )
+nodes/fragment/2/node = SubResource( 5 )
+nodes/fragment/2/position = Vector2( 80, 140 )
+nodes/fragment/3/node = SubResource( 6 )
+nodes/fragment/3/position = Vector2( 340, 120 )
+nodes/fragment/4/node = SubResource( 7 )
+nodes/fragment/4/position = Vector2( 860, 100 )
+nodes/fragment/5/node = SubResource( 8 )
+nodes/fragment/5/position = Vector2( 1080, 140 )
+nodes/fragment/6/node = SubResource( 9 )
+nodes/fragment/6/position = Vector2( 580, 160 )
+nodes/fragment/7/node = SubResource( 10 )
+nodes/fragment/7/position = Vector2( 1140, 40 )
+nodes/fragment/8/node = SubResource( 11 )
+nodes/fragment/8/position = Vector2( 0, -80 )
+nodes/fragment/9/node = SubResource( 12 )
+nodes/fragment/9/position = Vector2( 420, -20 )
+nodes/fragment/10/node = SubResource( 1 )
+nodes/fragment/10/position = Vector2( 660, 0 )
+nodes/fragment/11/node = SubResource( 2 )
+nodes/fragment/11/position = Vector2( 200, -60 )
+nodes/fragment/12/node = SubResource( 3 )
+nodes/fragment/12/position = Vector2( 1400, 180 )
+nodes/fragment/13/node = SubResource( 4 )
+nodes/fragment/13/position = Vector2( 1200, 300 )
+nodes/fragment/connections = PoolIntArray( 2, 0, 3, 0, 3, 2, 6, 0, 6, 0, 4, 0, 4, 0, 5, 0, 7, 0, 0, 5, 7, 0, 0, 0, 9, 0, 10, 0, 10, 0, 4, 1, 8, 0, 11, 0, 11, 0, 9, 0, 5, 0, 12, 0, 12, 0, 0, 1 )
+
+[resource]
+shader = SubResource( 13 )
